@@ -7,7 +7,7 @@
 {{ui-dropdown
     content=timeOfDay
     value=timeOfDaySearch
-    prompt="PM"
+    prompt=currentTimeOfDay
 }}
 
 {{ui-dropdown
@@ -17,15 +17,11 @@
 }}
 <button {{action "truckSearch"}}>Search</button>
 
-
 {{#each truck in trucks}}
-  <a target="_blank" {{bind-attr href=currentDay}}>{{truck.applicant}}</a>
   <p>
-    {{truck.applicant}}
-  </p>
-    <p>
-    {{truck.optionaltext}}
-    {{truck.start24}}
-    {{truck.end24}}
+    <h4><a target="_blank" {{bind-attr href=truck.link}}>{{truck.name}}</a></h4>
+    {{truck.description}}
+    <br>
+    {{truck.startTime}} - {{truck.endTime}}
   </p>
 {{/each}}
