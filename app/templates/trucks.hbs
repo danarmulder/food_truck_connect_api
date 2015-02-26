@@ -1,0 +1,31 @@
+
+{{ui-dropdown
+    content=hours
+    value=timeSearch
+    prompt=currentHour
+}}
+{{ui-dropdown
+    content=timeOfDay
+    value=timeOfDaySearch
+    prompt="PM"
+}}
+
+{{ui-dropdown
+    content=days
+    value=daySearch
+    prompt=currentDay
+}}
+<button {{action "truckSearch"}}>Search</button>
+
+
+{{#each truck in trucks}}
+  <a target="_blank" {{bind-attr href=currentDay}}>{{truck.applicant}}</a>
+  <p>
+    {{truck.applicant}}
+  </p>
+    <p>
+    {{truck.optionaltext}}
+    {{truck.start24}}
+    {{truck.end24}}
+  </p>
+{{/each}}
