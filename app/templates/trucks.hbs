@@ -1,27 +1,48 @@
+<div class="ui grid" id="main-content">
+  <div class="fifteen wide centered column">
+    {{ui-dropdown
+        content=hours
+        value=timeSearch
+        prompt=currentHour
+    }}
+    {{ui-dropdown
+        content=timeOfDay
+        value=timeOfDaySearch
+        prompt=currentTimeOfDay
+    }}
+    {{ui-dropdown
+        content=days
+        value=daySearch
+        prompt=currentDay
+    }}
+    <button {{action "truckSearch"}}>Search</button>
+    {{#each truck in ourTrucks}}
+      <div class="ui divided list">
+        <div class="item">
+          <i class="map marker icon"></i>
+          <div class="content">
+            <a class="active blue header"target="_blank" {{bind-attr href=truck.link}}>{{truck.name}}</a>
+            <div class="description">{{truck.description}}</div>
+            <div class="description">{{truck.startTime}} - {{truck.endTime}}</div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+    {{#each truck in trucks}}
+      <div class="ui divided list">
+        <div class="item">
+          <i class="map marker icon"></i>
+          <div class="content">
+            <a class="active blue header"target="_blank" {{bind-attr href=truck.link}}>{{truck.name}}</a>
+            <div class="description">{{truck.description}}</div>
+            <div class="description">{{truck.startTime}} - {{truck.endTime}}</div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
 
-{{ui-dropdown
-    content=hours
-    value=timeSearch
-    prompt=currentHour
-}}
-{{ui-dropdown
-    content=timeOfDay
-    value=timeOfDaySearch
-    prompt=currentTimeOfDay
-}}
-
-{{ui-dropdown
-    content=days
-    value=daySearch
-    prompt=currentDay
-}}
-<button {{action "truckSearch"}}>Search</button>
-
-{{#each truck in trucks}}
-  <p>
-    <h4><a target="_blank" {{bind-attr href=truck.link}}>{{truck.name}}</a></h4>
-    {{truck.description}}
-    <br>
-    {{truck.startTime}} - {{truck.endTime}}
-  </p>
-{{/each}}
+    <div class="eight wide column" id="map-canvas">
+      <div id='map'></div>
+    </div>
+  </div>
+</div>

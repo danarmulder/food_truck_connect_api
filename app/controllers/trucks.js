@@ -9,6 +9,26 @@ function twitterLink(name){
   var twitterLink = 'https://twitter.com/search?f=realtime&q=' + twitterSearch + '%20near%3A"San%20Francisco%2C%20CA"%20within%3A15mi&src=typd';
   return twitterLink;
 }
+function timeConvert(time){
+  var time24;
+  var timeHour = time.slice(0, time.length - 2);
+  timeHour = parseInt(timeHour);
+  var timeOfDay = time.slice(time.length - 2, time.length);
+  if (timeHour !== 12){
+    if(timeOfDay === 'PM'){
+      time24 = (12 + timeHour);
+    } else {
+      time24 = timeHour;
+    }
+  } else {
+    if(timeOfDay === 'PM'){
+      time24 = timeHour;
+    } else{
+      time24 = 0;
+    }
+  }
+  return time24;
+}
 
 var dayArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 var currentDate = new Date();
@@ -36,9 +56,11 @@ export default Ember.Controller.extend({
   hours: [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
   timeOfDay: ["AM","PM"],
   trucks: [],
+  ourTrucks:[],
   actions: {
     truckSearch: function(){
       var trucks = [];
+      var ourTrucks = [];
       var day = this.get('daySearch');
       var userStartTime = this.get('timeSearch');
       var usertimeOfDay = this.get('timeOfDaySearch');
@@ -74,12 +96,34 @@ export default Ember.Controller.extend({
                   longitude: results[i].longitude,
                   latitude: results[i].latitude
                   });
-              console.log(trucks);
               _this.set('trucks', trucks);
 
             }
           }
         }
+      }).then(function(){
+        Ember.$.getJSON('http://localhost:3000/trucks?q=' + day).then(function(results){
+          results = results.trucks;
+          for(var i= 0; i < results.length; i++){
+            console.log(result);
+            var result = results[i];
+            var startTime = timeConvert(result.starttime);
+            var endTime = timeConvert(result.endtime);
+            if (userTime >= startTime  && userTime <= endTime){
+              console.log(result);
+              ourTrucks.push({
+                link: result.link,
+                name: result.name,
+                description: result.description,
+                startTime: result.starttime,
+                endTime: result.endtime,
+                longitude: result.longitude,
+                latitude: result.latitude
+                });
+              _this.set('ourTrucks', ourTrucks);
+            }
+          }
+        });
       });
     }
   }
